@@ -5,12 +5,16 @@ import AppHeader from './components/header/AppHeader.vue';
 import AppMain from './components/main/AppMain.vue';
 import AppLoader from './components/generics/AppLoader.vue';
 import AppAlert from './components/generics/AppAlert.vue';
+import AppPagination from './components/generics/AppPagination.vue';
 
 
 export default {
   data() {
     return {
-      projects: [],
+      projects: {
+        data: [],
+        links: []
+      },
       isLoading: false,
       isAlertOpen: false
     }
@@ -19,14 +23,16 @@ export default {
     AppHeader,
     AppMain,
     AppLoader,
-    AppAlert
+    AppAlert,
+    AppPagination
   },
   methods: {
     fetchProjects(endpoint='http://127.0.0.1:8000/api/projects/') {
       this.isLoading = true;
       this.isAlertOpen = false;
       axios.get(endpoint).then(res => {
-        this.projects = res.data;
+        this.projects.data = res.data.data;
+        this.projects.links = res.data.links;
       }).catch(err => {
         console.log(err);
         this.isAlertOpen = true;
@@ -52,7 +58,9 @@ export default {
     type="danger"
     message="Some errors occured during API request"
     @close="closeAlert"/>
-    <AppMain :projects="projects"/>
+    <AppPagination :links="projects.links" @changePage="fetchProjects"/>
+    <AppMain :projects="projects.data"/>
+    <AppPagination :links="projects.links" @changePage="fetchProjects"/>
   </div>
 </template>
 
