@@ -9,11 +9,32 @@ export default {
     project: Object
   },
   computed: {
-    getCreatedAt() {
-
+    abstract() {
+        const abstract = this.project.description.slice(0, 249) + '...';
+        return abstract;
     }
   },
-  methods: {}
+  methods: {
+    formatDates($in_date) {
+        const date = new Date($in_date);
+
+        let day = date.getDate();
+        let month = date.getMonth() + 1;
+        const year = date.getFullYear();
+        let hours = date.getHours();
+        let minutes = date.getMinutes();
+        let seconds = date.getSeconds();
+
+        day = day < 10 ? '0' + day : day;
+        month = month < 10 ? '0' + month : month;
+        hours = hours < 10 ? '0' + hours : hours;
+        minutes = minutes < 10 ? '0' + minutes : minutes;
+        seconds = seconds < 10 ? '0' + seconds : seconds;
+
+        const out_date = `${day}/${month}/${year} at ${hours}:${minutes}`;
+        return out_date;
+    }
+  }
 }
 </script>
 
@@ -25,27 +46,31 @@ export default {
         </div>
         <div class="card-body">
             <div class="cardInfo text-start">
-                <div class="description">
+                <div class="description" v-if="project.description">
                     <span><strong>Description: </strong></span>
-                    <div> {{ project.description }} </div>
+                    <div> {{ abstract }} </div>
+                </div>
+                <div class="author" v-if="project.author">
+                    <span><strong>Author: </strong></span>
+                    <span> {{ project.author.name }} </span>
                 </div>
                 <div class="createdAt">
                     <span><strong>Created: </strong></span>
-                    <span> {{ project.created_at }} </span>
+                    <span> {{ formatDates(project.created_at) }} </span>
                 </div>
                 <div class="updatedAt">
                     <span><strong>Last Update: </strong></span>
-                    <span> {{ project.updated_at }} </span>
+                    <span> {{ formatDates(project.updated_at) }} </span>
                 </div>
-                <div class="type">
+                <div class="type" v-if="project.type">
                     <span><strong>Type: </strong></span>
                     <span> {{ project.type.label }} </span>
                 </div>
-                <div class="updatedAt">
+                <div class="technologies" v-if="project.technologies">
                     <span><strong>Technologies: </strong></span>
                     <span>
                         <ul>
-                            <li v-for="technology in project.technologies">
+                            <li v-for="technology in project.technologies" :key="technology.label">
                                 <div class="badge rounded-pill" :class="`text-bg-${technology.color}`"> {{ technology.label }} </div>
                             </li>
                         </ul>

@@ -22,7 +22,7 @@ export default {
         <div class="container my-3">
             <h1>All Projects</h1>
             <div class="row">
-                <div class="col" v-for="project in projects">
+                <div class="col" v-for="project in projects" :key="project.id">
                     <ProjectCard :project="project"/>
                 </div>
             </div>
