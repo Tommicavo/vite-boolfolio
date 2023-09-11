@@ -1,18 +1,19 @@
 <script>
 
 export default {
-  data() {
-    return {}
-  },
-  components: {},
-  props: {
-    project: Object
-  },
-  computed: {
-    abstract() {
-        const abstract = this.project.description.slice(0, 249) + '...';
-        return abstract;
-    }
+    name: 'ProjectCard',
+    data() {
+        return {}
+    },
+    components: {},
+    props: {
+        project: Object
+    },
+    computed: {
+        abstract() {
+            const abstract = this.project.description.slice(0, 249) + '...';
+            return abstract;
+        }
   },
   methods: {
     formatDates($in_date) {

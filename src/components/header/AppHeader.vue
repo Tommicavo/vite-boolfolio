@@ -1,13 +1,14 @@
 <script>
 
 export default {
-  data() {
-    return {}
-  },
-  components: {},
-  props: {},
-  computed: {},
-  methods: {}
+    name: 'AppHeader',
+    data() {
+        return {}
+    },
+    components: {},
+    props: {},
+    computed: {},
+    methods: {}
 }
 </script>
 

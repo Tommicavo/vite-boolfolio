@@ -3,6 +3,7 @@
 import ProjectCard from './ProjectCard.vue';
 
 export default {
+  name: 'AppMain',
   data() {
     return {}
   },
@@ -18,16 +19,19 @@ export default {
 </script>
 
 <template>
-    <main>
-        <div class="container my-3">
-            <h1>All Projects</h1>
-            <div class="row">
-                <div class="col" v-for="project in projects" :key="project.id">
-                    <ProjectCard :project="project"/>
-                </div>
+  <main>
+    <div class="container my-3">
+        <h1>All Projects</h1>
+        <div class="row" v-if="projects.length">
+            <div class="col" v-for="project in projects" :key="project.id">
+                <ProjectCard :project="project"/>
             </div>
         </div>
-    </main>
+        <div class="emptyProjects" v-else>
+          <h3>No projects here...</h3>
+        </div>
+    </div>
+  </main>
 </template>
 
 <style lang="scss" scoped>
