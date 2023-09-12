@@ -2,6 +2,9 @@ import { createApp } from 'vue'
 import './style.css'
 import App from './App.vue'
 
+// Router
+import { router } from './router/index.js';
+
 // AppLoader
 import AppLoader from './components/generics/AppLoader.vue';
 
@@ -11,4 +14,5 @@ import 'bootstrap/dist/js/bootstrap.min.js';
 
 const app = createApp(App);
 app.component('AppLoader', AppLoader);
+app.use(router);
 app.mount('#app');
