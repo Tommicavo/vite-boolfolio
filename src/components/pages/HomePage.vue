@@ -58,6 +58,7 @@ export default {
       type="danger"
       message="Some errors occured during API request"
       @close="closeAlert"/>
+      <h1>All Projects</h1>
       <AppPagination :links="projects.links" @changePage="fetchProjects"/>
       <AppMain :projects="projects.data"/>
       <AppPagination :links="projects.links" @changePage="fetchProjects"/>

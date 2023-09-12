@@ -7,10 +7,12 @@ export default {
     },
     components: {},
     props: {
-        project: Object
+        project: Object,
+        isDetail: Boolean
     },
     computed: {
         abstract() {
+            if (this.isDetail) return this.project.description;
             const abstract = this.project.description.slice(0, 249) + '...';
             return abstract;
         }
@@ -78,6 +80,9 @@ export default {
                     </span>
                 </div>
             </div>
+        </div>
+        <div class="card-footer py-3">
+            <router-link v-if="!isDetail" class="btn btn-primary" :to="{name: 'detailPage', params: {id: project.id}}">Info</router-link>
         </div>
     </div>
 </template>

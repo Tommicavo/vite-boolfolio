@@ -21,7 +21,6 @@ export default {
 <template>
   <main>
     <div class="container my-3">
-        <h1>All Projects</h1>
         <div class="row" v-if="projects.length">
             <div class="col" v-for="project in projects" :key="project.id">
                 <ProjectCard :project="project"/>
