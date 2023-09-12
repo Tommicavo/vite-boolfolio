@@ -25,9 +25,7 @@ export default {
   methods: {
     fetchProjects(){
         this.isLoading = true;
-        const finalUri = this.$route.params.id;
-        console.log(finalUri);
-        const endpoint = `${baseUri}${finalUri}/projects`;
+        const endpoint = `${baseUri}${this.$route.params.id}/projects`;
         axios.get(endpoint)
         .then(res => {
             this.type = res.data.type;
@@ -47,9 +45,11 @@ export default {
 </script>
 
 <template>
-  <h1 class="py-3">All {{ type.label }} projects here</h1>
   <AppLoader v-if="isLoading"/>
-  <AppMain v-if="!isLoading && projects.length" :projects="projects"/>
+  <div v-if="!isLoading">
+    <h1 class="py-3">All {{ type.label }} projects here</h1>
+    <AppMain v-if="!isLoading && projects.length" :projects="projects"/>
+  </div>
 </template>
 
 <style lang="scss" scoped>
