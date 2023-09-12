@@ -24,10 +24,8 @@ export default {
     fetchProject(){
       this.isLoading = true;
       const endpoint = `${baseUri}${this.$route.params.id}`;
-      console.log(endpoint);
       axios.get(endpoint)
       .then(res => {
-        console.log(res.data);
         this.project = res.data;
       }).catch(err => {
         console.error(err);

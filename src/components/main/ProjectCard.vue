@@ -43,8 +43,13 @@ export default {
 
 <template>
     <div class="card projectCard">
-        <h2 class="card-title pb-3"> {{ project.title }} </h2>
-        <div class="d-flex justify-content-center align-items-center" v-if="project.image">
+        <div class="card-header d-flex justify-content-between align-items-center bg-white">
+            <h2 class="card-title"> {{ project.title }} </h2>
+            <router-link :to="{name: 'typeProjects', params: {id: project.type.id}}">
+                <div class="badge p-3" :style="`background-color: ${project.type.color}`"> {{ project.type.label }} </div>
+            </router-link>
+        </div>
+        <div class="d-flex justify-content-center align-items-center py-3" v-if="project.image">
             <img :src="project.image" class="card-img-top image" :alt="project.title">
         </div>
         <div class="card-body">
@@ -81,8 +86,8 @@ export default {
                 </div>
             </div>
         </div>
-        <div class="card-footer py-3">
-            <router-link v-if="!isDetail" class="btn btn-primary" :to="{name: 'detailPage', params: {id: project.id}}">Info</router-link>
+        <div v-if="!isDetail" class="card-footer bg-white pt-3">
+            <router-link class="btn btn-primary" :to="{name: 'detailPage', params: {id: project.id}}">Info</router-link>
         </div>
     </div>
 </template>
