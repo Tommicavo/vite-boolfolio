@@ -16,10 +16,23 @@ export default {
   },
   components: {},
   props: {},
-  computed: {},
+  computed: {
+    hasErrors(){
+      return Object.keys(this.errors).length;
+    },
+    showAlert(){
+      return Boolean(this.hasErrors || this.successMessage);
+    },
+    alertType(){
+      return this.hasErrors ? 'danger' : 'success';
+    }
+  },
   methods: {
     sendForm(){
       this.isLoading = true;
+      this.errors = {};
+      this.successMessage = null;
+
 
       axios.post(endpoint, this.form)
       .then(res => {
@@ -28,6 +41,9 @@ export default {
       })
       .catch(err => {
         console.error(err);
+        this.errors = {
+          network: 'A network error occurred...'
+        };
       })
       .then(() => {
         this.isLoading = false;
@@ -42,8 +58,13 @@ export default {
   <div v-else>
     <h1 class="py-3">Contact Us</h1>
 
-    <AppAlert type="danger" :isOpen="false">
-    
+    <AppAlert :type="alertType" :isOpen="showAlert">
+      <div v-if="successMessage"> {{ successMessage }} </div>
+      <div v-if="hasErrors">
+        <ul>
+          <li v-for="(error, field) in errors" :key="field"> {{ error }} </li>
+        </ul>
+    </div>
     </AppAlert>
 
     <form @submit.prevent="sendForm">
