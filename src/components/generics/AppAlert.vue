@@ -19,8 +19,10 @@ export default {
 
 <template>
     <div v-if="isOpen" :class="[`alert-${type || 'info'}`, {'alert-dismissible' : dismissable}]" class="alert fade show my-3" role="alert">
-        <div class="text-center py-2"><strong>Warning!</strong></div>
-        <slot></slot>
+        <div class="messageContent text-start py-2">
+          <div class="text-center"><strong>Alert</strong></div>
+          <slot></slot>
+        </div>
         <button v-if="dismissable" type="button" class="btn-close" @click="$emit('close')"></button>
     </div>
 </template>

@@ -11,7 +11,8 @@ export default {
       form: emptyForm,
       errors: {},
       successMessage: null,
-      isLoading: false
+      isLoading: false,
+      isPristine: true
     }
   },
   components: {},
@@ -32,6 +33,7 @@ export default {
       this.isLoading = true;
       this.errors = {};
       this.successMessage = null;
+      this.isPristine = false;
 
 
       axios.post(endpoint, this.form)
@@ -40,14 +42,29 @@ export default {
         this.successMessage = 'Email successfully sent!'
       })
       .catch(err => {
-        console.error(err);
-        this.errors = {
-          network: 'A network error occurred...'
-        };
+        if (err.response.status === 400){
+          const errors = err.response.data.errors;
+          const errorMessages = {};
+          for (let field in errors)
+          {
+            errorMessages[field] = errors[field][0];
+            this.errors = errorMessages;
+          }
+          console.log(errors);
+        } else {
+          console.error(err);
+          this.errors = {
+            network: 'A network error occurred...'
+          };
+        }
       })
       .then(() => {
         this.isLoading = false;
       })
+    },
+    validateField(field){
+      if (this.isPristine) return '';
+      return this.errors[field] ? 'is-invalid' : 'is-valid';
     }
   }
 }
@@ -67,15 +84,17 @@ export default {
     </div>
     </AppAlert>
 
-    <form @submit.prevent="sendForm">
+    <form @submit.prevent="sendForm" novalidate>
       <!-- Email -->
       <div class="mb-3">
         <label for="email" class="form-label">
           <span>Your Email address</span>
           <span><sup class="text-danger">*</sup></span>
         </label>
-        <input type="email" class="form-control" id="email" placeholder="your-email@mail.com" v-model.trim="form.email">
-        <small class="form-text text-muted">Your email. We will contact you at this email.</small>
+        <input type="email" class="form-control" id="email" placeholder="your-email@mail.com"
+        v-model.trim="form.email" :class="validateField('email')">
+        <div v-if="errors.email" class="invalid-feedback"> {{ errors.email }} </div>
+        <small v-else class="form-text text-muted">Your email. We will contact you at this email.</small>
       </div>
 
       <!-- Subject -->
@@ -84,7 +103,9 @@ export default {
           <span>Email subject</span>
           <span><sup class="text-danger">*</sup></span>
         </label>
-        <input type="text" class="form-control" id="subject" placeholder="Subject" v-model.trim="form.subject">
+        <input type="text" class="form-control" id="subject" placeholder="Subject"
+        v-model.trim="form.subject" :class="validateField('subject')">
+        <div v-if="errors.subject" class="invalid-feedback"> {{ errors.subject }} </div>
       </div>
 
       <!-- Message -->
@@ -93,7 +114,9 @@ export default {
           <span>Write your message</span>
           <span><sup class="text-danger">*</sup></span>
         </label>
-        <textarea class="form-control" id="message" rows="3" v-model.trim="form.message"></textarea>
+        <textarea class="form-control" id="message" rows="3"
+        v-model.trim="form.message" :class="validateField('message')"></textarea>
+        <div v-if="errors.message" class="invalid-feedback"> {{ errors.message }} </div>
       </div>
 
       <div class="mb-3">
