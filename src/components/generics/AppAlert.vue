@@ -9,7 +9,7 @@ export default {
   props: {
     isOpen: Boolean,
     type: String,
-    message: String
+    dismissable: Boolean
   },
   computed: {},
   methods: {},
@@ -18,10 +18,10 @@ export default {
 </script>
 
 <template>
-    <div v-if="isOpen" :class="`alert-${type || info}`" class="alert alert-dismissible fade show my-3" role="alert">
+    <div v-if="isOpen" :class="[`alert-${type || 'info'}`, {'alert-dismissible' : dismissable}]" class="alert fade show my-3" role="alert">
         <div class="text-center py-2"><strong>Warning!</strong></div>
-        <span> {{ message }} </span> 
-        <button type="button" class="btn-close" @click="$emit('close')"></button>
+        <slot></slot>
+        <button v-if="dismissable" type="button" class="btn-close" @click="$emit('close')"></button>
     </div>
 </template>
 

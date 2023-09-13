@@ -8,7 +8,10 @@ export default {
   name: 'ContactPage',
   data() {
     return {
-      form: emptyForm
+      form: emptyForm,
+      errors: {},
+      successMessage: null,
+      isLoading: false
     }
   },
   components: {},
@@ -16,15 +19,18 @@ export default {
   computed: {},
   methods: {
     sendForm(){
+      this.isLoading = true;
+
       axios.post(endpoint, this.form)
       .then(res => {
         this.form = emptyForm;
+        this.successMessage = 'Email successfully sent!'
       })
       .catch(err => {
         console.error(err);
       })
       .then(() => {
-
+        this.isLoading = false;
       })
     }
   }
@@ -32,42 +38,49 @@ export default {
 </script>
 
 <template>
-  <h1 class="py-3">Contact Us</h1>
+  <AppLoader v-if="isLoading"/>
+  <div v-else>
+    <h1 class="py-3">Contact Us</h1>
 
-  <form @submit.prevent="sendForm">
-    <!-- Email -->
-    <div class="mb-3">
-      <label for="email" class="form-label">
-        <span>Your Email address</span>
-        <span><sup class="text-danger">*</sup></span>
-      </label>
-      <input type="email" class="form-control" id="email" placeholder="your-email@mail.com" v-model.trim="form.email">
-      <small class="form-text text-muted">Your email. We will contact you at this email.</small>
-    </div>
+    <AppAlert type="danger" :isOpen="false">
+    
+    </AppAlert>
 
-    <!-- Subject -->
-    <div class="mb-3">
-      <label for="subject" class="form-label">
-        <span>Email subject</span>
-        <span><sup class="text-danger">*</sup></span>
-      </label>
-      <input type="text" class="form-control" id="subject" placeholder="Subject" v-model.trim="form.subject">
-    </div>
+    <form @submit.prevent="sendForm">
+      <!-- Email -->
+      <div class="mb-3">
+        <label for="email" class="form-label">
+          <span>Your Email address</span>
+          <span><sup class="text-danger">*</sup></span>
+        </label>
+        <input type="email" class="form-control" id="email" placeholder="your-email@mail.com" v-model.trim="form.email">
+        <small class="form-text text-muted">Your email. We will contact you at this email.</small>
+      </div>
 
-    <!-- Message -->
-    <div class="mb-3">
-      <label for="message" class="form-label">
-        <span>Write your message</span>
-        <span><sup class="text-danger">*</sup></span>
-      </label>
-      <textarea class="form-control" id="message" rows="3" v-model.trim="form.message"></textarea>
-    </div>
+      <!-- Subject -->
+      <div class="mb-3">
+        <label for="subject" class="form-label">
+          <span>Email subject</span>
+          <span><sup class="text-danger">*</sup></span>
+        </label>
+        <input type="text" class="form-control" id="subject" placeholder="Subject" v-model.trim="form.subject">
+      </div>
 
-    <div class="mb-3">
-      <button type="submit" class="btn btn-primary">Send</button>
-    </div>
+      <!-- Message -->
+      <div class="mb-3">
+        <label for="message" class="form-label">
+          <span>Write your message</span>
+          <span><sup class="text-danger">*</sup></span>
+        </label>
+        <textarea class="form-control" id="message" rows="3" v-model.trim="form.message"></textarea>
+      </div>
 
-  </form>
+      <div class="mb-3">
+        <button type="submit" class="btn btn-primary">Send</button>
+      </div>
+
+    </form>
+  </div>
 </template>
 
 <style lang="scss" scoped>
