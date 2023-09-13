@@ -25,6 +25,9 @@ export default {
                         <li class="nav-item">
                             <router-link class="navbar-brand" :to="{name: 'homePage'}">Home</router-link>
                         </li>
+                        <li class="nav-item">
+                            <router-link class="navbar-brand" :to="{name: 'contactPage'}">Contact us</router-link>
+                        </li>
                     </ul>
                 </div>
             </div>
