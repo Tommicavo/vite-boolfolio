@@ -4,6 +4,8 @@ import axios from 'axios';
 const endpoint = 'http://localhost:8000/api/contact-message';
 const emptyForm = {email: '', subject: '', message: ''};
 
+const emailJsValidationExp = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
 export default {
   name: 'ContactPage',
   data() {
@@ -30,11 +32,13 @@ export default {
   },
   methods: {
     sendForm(){
-      this.isLoading = true;
-      this.errors = {};
       this.successMessage = null;
       this.isPristine = false;
 
+      this.validateForm();
+      if (this.hasErrors) return;
+
+      this.isLoading = true;
 
       axios.post(endpoint, this.form)
       .then(res => {
@@ -65,6 +69,20 @@ export default {
     validateField(field){
       if (this.isPristine) return '';
       return this.errors[field] ? 'is-invalid' : 'is-valid';
+    },
+    validateForm(){
+      this.errors = {};
+
+      if (!this.form.email)
+      {
+        this.errors.email = 'Email is mandatory';
+      } else if (!this.form.email.match(emailJsValidationExp)) {
+        this.errors.email = 'Email is invalid';
+      }
+
+      if (!this.form.subject) this.errors.subject = 'Subject is mandatory';
+
+      if (!this.form.message) this.errors.message = 'Message is mandatory';
     }
   }
 }
