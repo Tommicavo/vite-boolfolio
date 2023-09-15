@@ -58,7 +58,10 @@ export default {
       type="danger"
       message="Some errors occured during API request"
       @close="closeAlert"/>
-      <h1>All Projects</h1>
+      <header class="d-flex justify-content-between align-items-center py-4">
+        <h1>All Projects</h1>
+        <router-link class="btn btn-success" :to="{name: 'createPage'}">Add Project</router-link>
+      </header>
       <AppPagination :links="projects.links" @changePage="fetchProjects"/>
       <AppMain :projects="projects.data"/>
       <AppPagination :links="projects.links" @changePage="fetchProjects"/>

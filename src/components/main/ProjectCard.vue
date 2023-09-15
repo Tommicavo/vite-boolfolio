@@ -86,8 +86,14 @@ export default {
                 </div>
             </div>
         </div>
-        <div v-if="!isDetail" class="card-footer bg-white pt-3">
-            <router-link class="btn btn-primary" :to="{name: 'detailPage', params: {id: project.id}}">Info</router-link>
+        <div class="card-footer bg-white pt-3">
+            <div v-if="!isDetail" class="homeCard">
+                <router-link class="btn btn-primary" :to="{name: 'detailPage', params: {id: project.id}}">Info</router-link>
+            </div>
+            <div v-else class="showCard d-flex justify-content-between align-items-center">
+                <router-link class="btn btn-warning" :to="{name: 'editPage', params: {id: project.id}}">Edit</router-link>
+                <router-link class="btn btn-danger" to="#">Delete</router-link>
+            </div>
         </div>
     </div>
 </template>
